@@ -1,6 +1,9 @@
-const mssql = require("mssql");
-const { DefaultAzureCredential } = require("@azure/identity");
-require("dotenv").config();
+import mssql from 'mssql'
+import { DefaultAzureCredential } from '@azure/identity'
+
+console.log('SERVER_MSSQL:', process.env.SERVER_MSSQL);
+
+
 
 const credential = new DefaultAzureCredential();
 
@@ -38,4 +41,5 @@ const connectToAzure = async () => {
   }
 };
 
-module.exports = connectToAzure;
+export default connectToAzure;
+
