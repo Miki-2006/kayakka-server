@@ -13,6 +13,9 @@ app.use(express.urlencoded({extended: true}))
 
 app.use("/api", routes)
 
+app.get('/', (req, res) => {
+    res.send('Сервер работает! API доступен по /api/events');
+});
 
 
 export default app
