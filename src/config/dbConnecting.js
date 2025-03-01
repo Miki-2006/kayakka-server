@@ -1,5 +1,8 @@
 import mssql from 'mssql'
 import { DefaultAzureCredential } from '@azure/identity'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 console.log('SERVER_MSSQL:', process.env.SERVER_MSSQL);
 
@@ -37,7 +40,7 @@ const connectToAzure = async () => {
     console.log("Успешное подключение к Azure SQL!");
     return poolConnection
   } catch (err) {
-    console.error(err.message);
+    console.error('здесь',err);
   }
 };
 
