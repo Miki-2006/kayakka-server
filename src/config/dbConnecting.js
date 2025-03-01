@@ -4,7 +4,6 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-console.log('SERVER_MSSQL:', process.env.SERVER_MSSQL);
 
 
 
