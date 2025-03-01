@@ -40,7 +40,7 @@ const connectToAzure = async () => {
     console.log("Успешное подключение к Azure SQL!");
     return poolConnection
   } catch (err) {
-    console.error('здесь',err);
+    console.error("❌ Ошибка подключения к базе данных:", err);
   }
 };
 
