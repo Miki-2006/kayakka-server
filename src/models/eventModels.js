@@ -13,7 +13,7 @@ export const getAllEvents = async () => {
 
 export const getSortedEvents = async (categoryId) => {
   let query = `
-    SELECT e.title, l.venue, c.name, e.price, e.image, e.event_date 
+    SELECT e.title, c.name as category_event, l.venue, c.name, e.price, e.image, e.event_date 
     FROM Events e 
     JOIN Locations l ON e.location_id = l.id 
     JOIN Categories c ON e.category_id = c.id
