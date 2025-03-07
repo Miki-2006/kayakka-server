@@ -6,7 +6,7 @@ export const getAllEvents = async () => {
   const result = await pool
     .request()
     .query(
-      "SELECT e.title, l.venue, e.price, e.image, e.event_date FROM Events e JOIN Locations l ON e.location_id = l.id"
+      "SELECT e.title, l.venue, c.name, e.price, e.image, e.event_date FROM Events e JOIN Locations l ON e.location_id = l.id JOIN Categories c ON e.category_id = c.id"
     );
   return result.recordset;
 };
