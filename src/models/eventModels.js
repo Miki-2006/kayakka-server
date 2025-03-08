@@ -6,14 +6,14 @@ export const getAllEvents = async () => {
   const result = await pool
     .request()
     .query(
-      "SELECT e.title, l.venue, e.price, e.image, e.event_date FROM Events e JOIN Locations l ON e.location_id = l.id ORDER BY e.event_date ASC"
+      "SELECT e.id, e.title, l.venue, e.price, e.image, e.event_date FROM Events e JOIN Locations l ON e.location_id = l.id ORDER BY e.event_date ASC"
     );
   return result.recordset;
 };
 
 export const getSortedEvents = async (categoryId) => {
   let query = `
-    SELECT e.title, c.name as category_event, l.venue, e.price, e.image, e.event_date 
+    SELECT e.id, e.title, c.name as category_event, l.venue, e.price, e.image, e.event_date 
     FROM Events e 
     JOIN Locations l ON e.location_id = l.id 
     JOIN Categories c ON e.category_id = c.id
@@ -31,7 +31,7 @@ export const getSortedEvents = async (categoryId) => {
 
 export const getEvent = async (eventId) => {
   let query = `
-    SELECT e.title, e.description, e.price, e.image, e.event_date, 
+    SELECT e.id, e.title, e.description, e.price, e.image, e.event_date, 
     c.name as category_event, 
     o.organization_name, o.website, 
     l.venue, l.max_attendees, l.address,
