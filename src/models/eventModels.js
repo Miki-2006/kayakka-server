@@ -41,7 +41,7 @@ export const getEvent = async (eventId) => {
       JOIN Categories c ON e.category_id = c.id
 	    JOIN Organizers o ON e.organizer_id = o.id
 	    JOIN Users u ON o.user_id = u.id
-      WHERE e.id = 1;
+      WHERE e.id = @eventId;
   `;
 
   const pool = await connectToAzure();
