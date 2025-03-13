@@ -1,4 +1,4 @@
-import connectToAzure from "../config/dbConnecting";
+import connectToAzure from "../config/dbConnecting.js";
 
 class User {
   static async findByEmail(email) {
