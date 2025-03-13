@@ -1,5 +1,5 @@
-import User from '../models/userModels'
-import hashPassword from '../middlewares/hashPassword';
+import User from '../models/userModels.js'
+import hashPassword from '../middlewares/hashPassword.js';
 
 export const register = async (req, res) => {
   try {
