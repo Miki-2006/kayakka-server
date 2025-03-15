@@ -1,4 +1,4 @@
-import connectToAzure from "../config/dbConnecting";
+import connectToAzure from "../config/dbConnecting.js";
 const pool = connectToAzure();
 
 class Event {
