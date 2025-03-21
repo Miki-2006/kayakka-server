@@ -44,6 +44,7 @@ class User {
         OUTPUT INSERTED.id
         VALUES (@f_name, @l_name, @email, @password, @phone, @role)`
       );
+      return result.recordset[0];
   }
 }
 
