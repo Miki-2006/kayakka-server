@@ -40,7 +40,9 @@ class User {
       .input("phone", mssql.NVarChar, phone)
       .input("role", mssql.NVarChar, role)
       .query(
-        "INSERT INTO Users (f_name, l_name, email, password, phone, role) VALUES (@f_name, @l_name, @email, @password, @phone, @role)"
+        `INSERT INTO Users (f_name, l_name, email, password, phone, role) 
+        OUTPUT INSERTED.id
+        VALUES (@f_name, @l_name, @email, @password, @phone, @role)`
       );
   }
 }
