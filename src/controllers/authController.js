@@ -21,11 +21,11 @@ export const register = async (req, res) => {
 
     const hashedPassword = await hashPassword(password);
     
-    await User.create({ f_name, l_name, email, password: hashedPassword, phone, role });
+    const newUser = await User.create({ f_name, l_name, email, password: hashedPassword, phone, role });
     
-    const token = jwt.sign({userId: User.id}, process.env.SECRET_KEY, {expiresIn: '7d'})
+    const token = jwt.sign({userId: newUser.id}, process.env.SECRET_KEY, {expiresIn: '7d'})
 
-    res.cookie('token', token, {httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000})
+    res.cookie('token', token, {httpOnly: true, sameSite: "None",maxAge: 7 * 24 * 60 * 60 * 1000})
     res.status(201).json({ message: "Пользователь зарегистрирован" });
   } catch (error) {
     console.error("Ошибка регистрации:", error);
