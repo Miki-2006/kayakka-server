@@ -31,7 +31,7 @@ class User {
 
   static async create({ f_name, l_name, email, password, phone, role }) {
     const pool = await connectToAzure();
-    await pool
+    const result = await pool
       .request()
       .input("f_name", mssql.NVarChar, f_name)
       .input("l_name", mssql.NVarChar, l_name)
