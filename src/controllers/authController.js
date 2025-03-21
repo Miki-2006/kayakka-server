@@ -21,7 +21,7 @@ export const register = async (req, res) => {
 
     const hashedPassword = await hashPassword(password);
     
-    const newUser = await User.create({ f_name, l_name, email, password: hashedPassword, phone, role });
+    const newUser = await User.create({ f_name, l_name, email,secure: false, password: hashedPassword, phone, role });
     
 
     const token = jwt.sign({userId: newUser.id}, process.env.SECRET_KEY, {expiresIn: '7d'})
