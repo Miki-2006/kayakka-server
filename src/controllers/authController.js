@@ -26,7 +26,7 @@ export const register = async (req, res) => {
 
     const token = jwt.sign({userId: newUser.id}, process.env.SECRET_KEY, {expiresIn: '7d'})
 
-    res.cookie('token', token, {httpOnly: true, sameSite: "None",secure: false, maxAge: 7 * 24 * 60 * 60 * 1000})
+    res.cookie('token', token, {httpOnly: false, sameSite: "None",secure: false, maxAge: 7 * 24 * 60 * 60 * 1000})
     res.status(201).json({ message: "Пользователь зарегистрирован" });
   } catch (error) {
     console.error("Ошибка регистрации:", error);
