@@ -14,6 +14,13 @@ export const addEvent = async (req, res) => {
       image,
     } = req.body;
 
+    if (!title || !description) {
+      return res.status(400).json({ message: "Заполните все поля" });
+    }
+
+    const parsedLocation = JSON.parse(location);
+    const parsedOrganizer = JSON.parse(organizer);
+
     // Создаём событие с обработкой всех данных
     const result = await Event.create({
       title,
@@ -21,21 +28,16 @@ export const addEvent = async (req, res) => {
       event_date,
       event_time,
       category,
-      location,
-      organizer,
+      parsedLocation,
+      parsedOrganizer,
       price,
       image,
     });
 
-    res.json({ message: "Мероприятие добавлено!", event: result , data: {title,
-      description,
-      event_date,
-      event_time,
-      category,
-      location,
-      organizer,
-      price,
-      image,}});
+    res.json({
+      message: "Мероприятие добавлено!",
+      event: result
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Ошибка при добавлении мероприятия" });
