@@ -2,10 +2,13 @@ import express from 'express'
 import { register } from '../controllers/authController.js'
 import User from '../models/userModels.js'
 import jwt from 'jsonwebtoken'
+import loginUser from '../controllers/loginController.js'
 
 const router = express.Router()
 
 router.post('/register', register)
+router.post('/login', loginUser)
+
 router.get('/auto-login', (req, res) => {
     const token = req.cookies.token;
     if (!token) return res.status(401).json({ message: 'Не зарегистрированы' });
