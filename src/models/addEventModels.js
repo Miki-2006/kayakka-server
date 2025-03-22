@@ -67,8 +67,6 @@ class Event {
     } catch (error) {
       await connection.rollback();
       throw error;
-    } finally {
-      connection.release();
     }
   }
 }
