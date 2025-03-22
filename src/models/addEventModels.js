@@ -13,7 +13,7 @@ class Event {
     location,
     organizer,
     price,
-    image,
+    image, // предполагаем, что image в формате base64
   }) {
     const transaction = new mssql.Transaction(pool);
 
@@ -32,6 +32,7 @@ class Event {
           .input('name', mssql.NVarChar, category)
           .query("INSERT INTO Categories (name) VALUES (@name); SELECT SCOPE_IDENTITY() AS id");
 
+        if (!categoryResult.recordset.length) throw new Error("Не удалось создать категорию");
         category_id = categoryResult.recordset[0].id;
       }
 
@@ -42,6 +43,7 @@ class Event {
         .input('address', mssql.NVarChar, location.address)
         .query("INSERT INTO Locations (venue, max_attendees, address) VALUES (@venue, @max_attendees, @address); SELECT SCOPE_IDENTITY() AS id");
 
+      if (!locationResult.recordset.length) throw new Error("Не удалось создать местоположение");
       const location_id = locationResult.recordset[0].id;
 
       // 4. Вставка организатора
@@ -51,18 +53,27 @@ class Event {
         .input('user_id', mssql.Int, organizer.user_id)
         .query("INSERT INTO Organizers (organization_name, website, user_id) VALUES (@organization_name, @website, @user_id); SELECT SCOPE_IDENTITY() AS id");
 
+      if (!organizerResult.recordset.length) throw new Error("Не удалось создать организатора");
       const organizer_id = organizerResult.recordset[0].id;
 
-      // 5. Вставка мероприятия
-      await transaction.request()
+      // 5. Обработка изображения (если есть)
+      // let imageBinary = null;
+      // if (image) {
+      //   // Преобразуем base64 строку в бинарный формат
+      //   const imageBuffer = Buffer.from(image, 'base64');
+      //   imageBinary = imageBuffer;
+      // }
+
+      // 6. Вставка мероприятия
+      const eventResult = await transaction.request()
         .input('title', mssql.NVarChar, title)
         .input('description', mssql.NVarChar, description)
         .input('event_date', mssql.DateTime, fullDateTime)
         .input('location_id', mssql.Int, location_id)
         .input('category_id', mssql.Int, category_id)
         .input('organizer_id', mssql.Int, organizer_id)
-        .input('price', mssql.Decimal(18, 2), price)
-        .input('image', mssql.NVarChar, image)
+        .input('price', mssql.Decimal(10, 0), price)
+        .input('image', mssql.NVarChar, image) // сохраняем бинарный формат изображения
         .query(
           `INSERT INTO Events (title, description, event_date, location_id, category_id, organizer_id, price, image) 
            VALUES (@title, @description, @event_date, @location_id, @category_id, @organizer_id, @price, @image)`
