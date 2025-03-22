@@ -27,7 +27,15 @@ export const addEvent = async (req, res) => {
       image,
     });
 
-    res.json({ message: "Мероприятие добавлено!", event: result });
+    res.json({ message: "Мероприятие добавлено!", event: result , data: {title,
+      description,
+      event_date,
+      event_time,
+      category,
+      location,
+      organizer,
+      price,
+      image,}});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Ошибка при добавлении мероприятия" });
