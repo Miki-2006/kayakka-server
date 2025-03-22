@@ -1,5 +1,5 @@
 import connectToAzure from "../config/dbConnecting.js";
-const pool = connectToAzure();
+const pool = await connectToAzure();
 
 class Event {
   static async create({
@@ -13,7 +13,7 @@ class Event {
     price,
     image,
   }) {
-    const connection = await pool;
+    const connection = pool;
     try {
       await connection.beginTransaction();
 
