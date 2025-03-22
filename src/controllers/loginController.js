@@ -26,7 +26,7 @@ const loginUser = async (req, res) => {
 
     const token = jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '7d' });
 
-    res.json({ token });
+    res.json({ token, user });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
