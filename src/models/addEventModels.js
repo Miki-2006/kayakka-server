@@ -13,9 +13,8 @@ class Event {
     price,
     image,
   }) {
-    const connection = pool;
     try {
-      await connection.beginTransaction();
+      await pool.beginTransaction();
 
       // 1. Объединяем дату и время в формат DATETIME
       const fullDateTime = `${event_date} ${event_time}`;
@@ -25,7 +24,7 @@ class Event {
       if (typeof category === "number") {
         category_id = category;
       } else {
-        const [categoryResult] = await connection.query(
+        const [categoryResult] = await pool.query(
           "INSERT INTO Categories (name) VALUES (?) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)",
           [category]
         );
@@ -33,21 +32,21 @@ class Event {
       }
 
       // 3. Вставка местоположения
-      const [locationResult] = await connection.query(
+      const [locationResult] = await pool.query(
         "INSERT INTO Locations (venue, max_attendees, address) VALUES (?, ?, ?)",
         [location.venue, location.max_attendees, location.address]
       );
       const location_id = locationResult.insertId;
 
       // 4. Вставка организатора
-      const [organizerResult] = await connection.query(
+      const [organizerResult] = await pool.query(
         "INSERT INTO Organizers (organization_name, website, user_id) VALUES (?, ?, ?)",
         [organizer.organization_name, organizer.website, organizer.user_id]
       );
       const organizer_id = organizerResult.insertId;
 
       // 5. Вставка мероприятия
-      await connection.query(
+      await pool.query(
         `INSERT INTO Events (title, description, event_date, location_id, category_id, organizer_id, price, image) 
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
@@ -62,10 +61,10 @@ class Event {
         ]
       );
 
-      await connection.commit();
+      await pool.commit();
       return { success: true, message: "Мероприятие успешно создана!" };
     } catch (error) {
-      await connection.rollback();
+      await pool.rollback();
       throw error;
     }
   }
