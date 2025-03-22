@@ -13,7 +13,7 @@ class Event {
     price,
     image,
   }) {
-    const connection = await pool.getConnection();
+    const connection = await pool;
     try {
       await connection.beginTransaction();
 
