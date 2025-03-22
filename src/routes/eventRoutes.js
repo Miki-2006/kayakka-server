@@ -7,6 +7,6 @@ const router = express.Router()
 router.get('/', getEvents)
 router.get('/sort', getQueryEvents)
 router.get('/card', getOneEvent)
-router.get('/adding', addEvent)
+router.post('/adding', addEvent)
 
 export default router
