@@ -65,7 +65,7 @@ class Event {
       return { success: true, message: "Мероприятие успешно создана!" };
     } catch (error) {
       await pool.rollback();
-      throw error;
+      return { success: false, message: error };
     }
   }
 }
