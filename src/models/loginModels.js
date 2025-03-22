@@ -1,4 +1,4 @@
-import connectToAzure from "../config/dbConnecting";
+import connectToAzure from "../config/dbConnecting.js";
 
 export const getUserByEmail = async (email) => {
   const pool = await connectToAzure();
