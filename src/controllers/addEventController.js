@@ -15,7 +15,7 @@ export const addEvent = async (req, res) => {
     } = req.body;
 
     if (!title || !description) {
-      return res.status(400).json({ message: "Заполните все поля" });
+      return res.status(400).json({ message: "Заполните все поля" , title});
     }
 
     let parsedLocation = null;
