@@ -1,3 +1,5 @@
+import Event from "../models/addEventModels.js";
+
 export const addEvent = async (req, res) => {
   try {
     const { title, description, event_date, event_time, category, price } =
