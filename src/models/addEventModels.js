@@ -69,12 +69,12 @@ class Event {
       const organizer_id = organizerResult.recordset[0].id;
 
       // 5. Обработка изображения (если есть)
-      let imageBinary = null;
-      if (image) {
-        // Преобразуем base64 строку в бинарный формат
-        const imageBuffer = Buffer.from(image, "base64");
-        imageBinary = imageBuffer;
-      }
+      // let imageBinary = null;
+      // if (image) {
+      //   // Преобразуем base64 строку в бинарный формат
+      //   const imageBuffer = Buffer.from(image, "base64");
+      //   imageBinary = imageBuffer;
+      // }
 
       // 6. Вставка мероприятия
       const eventResult = await transaction
@@ -86,7 +86,7 @@ class Event {
         .input("category_id", mssql.Int, category_id)
         .input("organizer_id", mssql.Int, organizer_id)
         .input("price", mssql.Decimal(10, 0), price)
-        .input("image", mssql.NVarChar, imageBinary) // сохраняем бинарный формат изображения
+        .input("image", mssql.NVarChar, image) // сохраняем бинарный формат изображения
         .query(
           `INSERT INTO Events (title, description, event_date, location_id, category_id, organizer_id, price, image) 
            VALUES (@title, @description, @event_date, @location_id, @category_id, @organizer_id, @price, @image)`
