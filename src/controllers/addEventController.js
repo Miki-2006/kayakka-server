@@ -1,18 +1,7 @@
-import Event from "../models/addEventModels.js";
-
 export const addEvent = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      event_date,
-      event_time,
-      category,
-      location,
-      organizer,
-      price,
-      image,
-    } = req.body;
+    const { title, description, event_date, event_time, category, price } =
+      req.body;
 
     if (!title || !description) {
       return res
@@ -20,17 +9,19 @@ export const addEvent = async (req, res) => {
         .json({ message: "Заполните все обязательные поля" });
     }
 
-    let parsedLocation = null;
-    let parsedOrganizer = null;
+    let location = req.body.location;
+    let organizer = req.body.organizer;
 
     try {
-      parsedLocation = location ? JSON.parse(location) : null;
-      parsedOrganizer = organizer ? JSON.parse(organizer) : null;
+      location = location ? JSON.parse(location) : null;
+      organizer = organizer ? JSON.parse(organizer) : null;
     } catch (err) {
       return res
         .status(400)
         .json({ message: "Ошибка при разборе JSON-данных" });
     }
+
+    const image = req.file ? req.file.buffer.toString("base64") : null; // Преобразуем файл в base64
 
     const result = await Event.create({
       title,
@@ -38,8 +29,8 @@ export const addEvent = async (req, res) => {
       event_date,
       event_time,
       category,
-      location: parsedLocation,
-      organizer: parsedOrganizer,
+      location,
+      organizer,
       price,
       image,
     });
