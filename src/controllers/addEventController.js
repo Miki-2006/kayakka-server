@@ -1,4 +1,4 @@
-import Event from "../models/addEventModels.js";
+import Event from "../models/eventModel.js";
 
 export const addEvent = async (req, res) => {
   try {
@@ -15,7 +15,9 @@ export const addEvent = async (req, res) => {
     } = req.body;
 
     if (!title || !description) {
-      return res.status(400).json({ message: "Заполните все поля" , title: title});
+      return res
+        .status(400)
+        .json({ message: "Заполните все обязательные поля" });
     }
 
     let parsedLocation = null;
@@ -25,10 +27,11 @@ export const addEvent = async (req, res) => {
       parsedLocation = location ? JSON.parse(location) : null;
       parsedOrganizer = organizer ? JSON.parse(organizer) : null;
     } catch (err) {
-      return res.status(400).json({ message: "Ошибка при разборе данных" });
+      return res
+        .status(400)
+        .json({ message: "Ошибка при разборе JSON-данных" });
     }
 
-    // Создаём событие с обработкой всех данных
     const result = await Event.create({
       title,
       description,
@@ -41,10 +44,13 @@ export const addEvent = async (req, res) => {
       image,
     });
 
-    res.json({
-      message: "Мероприятие добавлено!",
-      event: result,
-    });
+    if (result.success) {
+      res
+        .status(201)
+        .json({ message: "Мероприятие добавлено!", event_id: result.event_id });
+    } else {
+      res.status(500).json({ error: result.message });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Ошибка при добавлении мероприятия" });
