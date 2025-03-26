@@ -23,22 +23,7 @@ class Event {
       // 1. Объединяем дату и время в формат DATETIME
       const fullDateTime = `${event_date} ${event_time}`;
 
-      // 2. Работа с категорией
-      let category_id;
-      if (typeof category === "number") {
-        category_id = category;
-      } else {
-        const categoryResult = await transaction
-          .request()
-          .input("name", mssql.NVarChar, category)
-          .query(
-            "INSERT INTO Categories (name) VALUES (@name); SELECT SCOPE_IDENTITY() AS id"
-          );
-
-        if (!categoryResult.recordset.length)
-          throw new Error("Не удалось создать категорию");
-        category_id = categoryResult.recordset[0].id;
-      }
+      
 
       // 3. Вставка местоположения
       const locationResult = await transaction
@@ -83,7 +68,7 @@ class Event {
         .input("description", mssql.NVarChar, description)
         .input("event_date", mssql.DateTime, fullDateTime)
         .input("location_id", mssql.Int, location_id)
-        .input("category_id", mssql.Int, category_id)
+        .input("category_id", mssql.Int, category)
         .input("organizer_id", mssql.Int, organizer_id)
         .input("price", mssql.Decimal(10, 0), price)
         .input("image", mssql.NVarChar, image) // сохраняем бинарный формат изображения
