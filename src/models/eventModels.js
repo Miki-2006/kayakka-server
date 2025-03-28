@@ -15,7 +15,7 @@ export const getAllEvents = async () => {
     const events = result.recordset.map((event) => ({
       ...event,
       image: event.image
-        ? `data:image/png;base64,${Buffer.from(event.image, "hex").toString(
+        ? `data:image/jpeg;base64,${Buffer.from(event.image, "hex").toString(
             "base64"
           )}`
         : null, // Если изображения нет, то null
