@@ -11,12 +11,14 @@ export const getAllEvents = async () => {
         ORDER BY e.event_date ASC
       `);
 
-    // Преобразуем `image` в Base64, если оно не `null`
+    // Преобразуем HEX-строку в Base64
     const events = result.recordset.map((event) => ({
       ...event,
       image: event.image
-        ? `data:image/png;base64,${Buffer.from(event.image).toString("base64")}`
-        : null, // Если изображения нет, то `null`
+        ? `data:image/png;base64,${Buffer.from(event.image, "hex").toString(
+            "base64"
+          )}`
+        : null, // Если изображения нет, то null
     }));
 
     return events;
