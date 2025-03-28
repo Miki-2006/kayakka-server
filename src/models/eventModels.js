@@ -1,14 +1,29 @@
 import connectToAzure from "../config/dbConnecting.js";
 
 export const getAllEvents = async () => {
-  const pool = await connectToAzure();
+  try {
+    const pool = await connectToAzure();
 
-  const result = await pool
-    .request()
-    .query(
-      "SELECT e.id, e.title, l.venue, e.price, e.image, e.event_date FROM Events e JOIN Locations l ON e.location_id = l.id ORDER BY e.event_date ASC"
-    );
-  return result.recordset;
+    const result = await pool.request().query(`
+        SELECT e.id, e.title, l.venue, e.price, e.image, e.event_date 
+        FROM Events e 
+        JOIN Locations l ON e.location_id = l.id 
+        ORDER BY e.event_date ASC
+      `);
+
+    // Преобразуем `image` в Base64, если оно не `null`
+    const events = result.recordset.map((event) => ({
+      ...event,
+      image: event.image
+        ? `data:image/png;base64,${Buffer.from(event.image).toString("base64")}`
+        : null, // Если изображения нет, то `null`
+    }));
+
+    return events;
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    throw new Error("Failed to fetch events");
+  }
 };
 
 export const getSortedEvents = async (categoryId) => {
