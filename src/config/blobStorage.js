@@ -1,6 +1,5 @@
 import { BlobServiceClient } from "@azure/storage-blob";
-import dotenv from "dotenv";
-
+import dotenv from 'dotenv'
 dotenv.config();
 
 const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
@@ -11,8 +10,7 @@ if (!connectionString || !containerName) {
 }
 
 // Инициализация клиента
-const blobServiceClient =
-  BlobServiceClient.fromConnectionString(connectionString);
+const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
 const containerClient = blobServiceClient.getContainerClient(containerName);
 
 export default containerClient;
