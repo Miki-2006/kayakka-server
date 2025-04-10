@@ -1,15 +1,18 @@
-import {BlobServiceClient, StorageSharedKeyCredential} from '@azure/storage-blob'
-import dotenv from 'dotenv'
+import { BlobServiceClient } from "@azure/storage-blob";
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-const accountName = process.env.AZURE_BLOB_STORAGE_ACCOUNT_NAME;
-const accountKey = process.env.AZURE_BLOB_STORAGE_ACCESS_KEY;
-const containerName = process.env.CONTAINER_NAME_FROM_BLOB_STORAGE; 
+const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const containerName = process.env.CONTAINER_NAME_FROM_BLOB_STORAGE;
 
-const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey)
-const blobServiceClient = new BlobServiceClient(`https://${accountName}.blob.core.windows.net`, sharedKeyCredential)
+if (!connectionString || !containerName) {
+  throw new Error("Connection string or container name is missing");
+}
 
+// Инициализация клиента
+const blobServiceClient =
+  BlobServiceClient.fromConnectionString(connectionString);
 const containerClient = blobServiceClient.getContainerClient(containerName);
 
 export default containerClient;
