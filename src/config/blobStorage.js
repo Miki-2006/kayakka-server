@@ -1,4 +1,7 @@
 import {BlobServiceClient, StorageSharedKeyCredential} from '@azure/storage-blob'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const accountName = process.env.AZURE_BLOB_STORAGE_ACCOUNT_NAME;
 const accountKey = process.env.AZURE_BLOB_STORAGE_ACCESS_KEY;
