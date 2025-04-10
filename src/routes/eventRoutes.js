@@ -1,6 +1,6 @@
 import express from 'express'
 import { getEvents, getOneEvent, getQueryEvents } from '../controllers/eventController.js'
-import upload from '../config/multer.js'
+import upload from '../middlewares/multer.js'
 import { addEvent } from '../controllers/addEventController.js'
 
 const router = express.Router()

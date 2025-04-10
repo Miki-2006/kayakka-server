@@ -1,6 +1,5 @@
 import mssql from "mssql";
 import connectToAzure from "../config/dbConnecting.js";
-import fs from "fs";
 
 const pool = await connectToAzure();
 
@@ -14,7 +13,7 @@ class Event {
     location,
     organizer,
     price,
-    image, // предполагаем, что image в формате base64
+    imageUrl, 
   }) {
     const transaction = new mssql.Transaction(pool);
 
@@ -52,23 +51,6 @@ class Event {
         throw new Error("Не удалось создать организатора");
       const organizer_id = organizerResult.recordset[0].id;
 
-      // 5. Обработка изображения (если есть)
-      let imageBinary = null;
-      if (image) {
-        // Читаем изображение в виде буфера
-        const imageBuffer = fs.readFileSync(image);
-
-        // Преобразуем буфер в строку Base64
-        const base64Image = imageBuffer.toString("base64");
-
-        // Преобразуем Base64 обратно в бинарный формат
-        const binaryBuffer = Buffer.from(base64Image, "base64");
-
-        // Преобразуем бинарный формат в HEX (если нужно)
-        const hexImage = "0x" + binaryBuffer.toString("hex").toUpperCase();
-        imageBinary = hexImage
-      }
-
       // 6. Вставка мероприятия
       const eventResult = await transaction
         .request()
@@ -79,7 +61,7 @@ class Event {
         .input("category_id", mssql.Int, category)
         .input("organizer_id", mssql.Int, organizer_id)
         .input("price", mssql.Decimal(10, 0), price)
-        .input("image", mssql.VarBinary, imageBinary) // сохраняем бинарный формат изображения
+        .input("image", mssql.NVarChar, imageUrl) // сохраняем бинарный формат изображения
         .query(
           `INSERT INTO Events (title, description, event_date, location_id, category_id, organizer_id, price, image) 
            VALUES (@title, @description, @event_date, @location_id, @category_id, @organizer_id, @price, @image)`

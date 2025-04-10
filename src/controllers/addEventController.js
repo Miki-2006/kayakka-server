@@ -1,4 +1,5 @@
 import Event from "../models/addEventModels.js";
+import { imageToStorage } from "./imageToBlobStorage.js";
 
 export const addEvent = async (req, res) => {
   try {
@@ -23,7 +24,15 @@ export const addEvent = async (req, res) => {
         .json({ message: "Ошибка при разборе JSON-данных" });
     }
 
-    const image = req.file ? req.file.buffer.toString("base64") : null; // Преобразуем файл в base64
+    let imageUrl = null;
+
+    if (req.file) {
+      const filePath = req.file.path;
+      imageUrl = await imageToStorage(title, filePath);
+
+      // Удаляем файл после загрузки в Azure
+      fs.unlinkSync(filePath);
+    }
 
     const result = await Event.create({
       title,
@@ -34,7 +43,7 @@ export const addEvent = async (req, res) => {
       location,
       organizer,
       price,
-      image,
+      imageUrl,
     });
 
     if (result.success) {

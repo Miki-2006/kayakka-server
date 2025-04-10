@@ -5,7 +5,7 @@ import routes from "./routes/index.js";
 
 const app = express();
 const corsOptions = {
-  origin: ["https://kayakka-client.vercel.app","https://www.kayakka.com"], // Разрешаем только этот источник
+  origin: ["https://kayakka-client.vercel.app","https://www.kayakka.com", "http://localhost:3000/"], // Разрешаем только этот источник
   methods: ["GET", "POST", "PUT", "DELETE"], // Разрешаем нужные методы
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
