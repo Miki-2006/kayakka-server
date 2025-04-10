@@ -6,7 +6,7 @@ const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING;
 const containerName = process.env.CONTAINER_NAME_FROM_BLOB_STORAGE;
 
 if (!connectionString || !containerName) {
-  throw new Error("Connection string or container name is missing");
+  throw new Error("Connection string or container name of blob storage is missing!");
 }
 
 // Инициализация клиента
