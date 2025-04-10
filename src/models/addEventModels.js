@@ -13,7 +13,7 @@ class Event {
     location,
     organizer,
     price,
-    imageUrl, 
+    nameOfImage, 
   }) {
     const transaction = new mssql.Transaction(pool);
 
@@ -61,10 +61,10 @@ class Event {
         .input("category_id", mssql.Int, category)
         .input("organizer_id", mssql.Int, organizer_id)
         .input("price", mssql.Decimal(10, 0), price)
-        .input("image", mssql.NVarChar, imageUrl) // сохраняем бинарный формат изображения
+        .input("nameofImage", mssql.NVarChar, nameOfImage) // сохраняем бинарный формат изображения
         .query(
-          `INSERT INTO Events (title, description, event_date, location_id, category_id, organizer_id, price, image) 
-           VALUES (@title, @description, @event_date, @location_id, @category_id, @organizer_id, @price, @image)`
+          `INSERT INTO Events (title, description, event_date, location_id, category_id, organizer_id, price, nameOfImage) 
+           VALUES (@title, @description, @event_date, @location_id, @category_id, @organizer_id, @price, @nameOfImage)`
         );
       if (eventResult.rowsAffected[0] === 0)
         throw new Error("Не удалось создать мероприятие");

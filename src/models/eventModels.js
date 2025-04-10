@@ -5,21 +5,11 @@ export const getAllEvents = async () => {
     const pool = await connectToAzure();
 
     const result = await pool.request().query(`
-        SELECT e.id, e.title, l.venue, e.price, e.image, e.event_date 
+        SELECT e.id, e.title, l.venue, e.price, e.nameOfImage, e.event_date 
         FROM Events e 
         JOIN Locations l ON e.location_id = l.id 
         ORDER BY e.event_date ASC
       `);
-
-    // Преобразуем HEX-строку в Base64
-    const events = result.recordset.map((event) => ({
-      ...event,
-      image: event.image
-        ? `data:image/jpeg;base64,${Buffer.from(event.image, "hex").toString(
-            "base64"
-          )}`
-        : null, // Если изображения нет, то null
-    }));
 
     return events;
   } catch (error) {
@@ -30,7 +20,7 @@ export const getAllEvents = async () => {
 
 export const getSortedEvents = async (categoryId) => {
   let query = `
-    SELECT e.id, e.title, c.name as category_event, l.venue, e.price, e.image, e.event_date 
+    SELECT e.id, e.title, c.name as category_event, l.venue, e.price, e.nameOfImage, e.event_date 
     FROM Events e 
     JOIN Locations l ON e.location_id = l.id 
     JOIN Categories c ON e.category_id = c.id
@@ -48,7 +38,7 @@ export const getSortedEvents = async (categoryId) => {
 
 export const getEvent = async (eventId) => {
   let query = `
-    SELECT e.id, e.title, e.description, e.price, e.image, e.event_date, 
+    SELECT e.id, e.title, e.description, e.price, e.nameOfImage, e.event_date, 
     c.name as category_event, 
     o.organization_name, o.website, 
     l.venue, l.max_attendees, l.address,

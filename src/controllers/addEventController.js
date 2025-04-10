@@ -24,11 +24,11 @@ export const addEvent = async (req, res) => {
         .json({ message: "Ошибка при разборе JSON-данных" });
     }
 
-    let imageUrl = null;
+    let nameOfImage = null;
 
     if (req.file) {
       const filePath = req.file.path;
-      imageUrl = await imageToStorage(title, filePath);
+      nameOfImage = await imageToStorage(title, filePath);
 
       // Удаляем файл после загрузки в Azure
       fs.unlinkSync(filePath);
@@ -43,7 +43,7 @@ export const addEvent = async (req, res) => {
       location,
       organizer,
       price,
-      imageUrl,
+      nameOfImage,
     });
 
     if (result.success) {
