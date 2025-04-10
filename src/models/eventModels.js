@@ -11,7 +11,7 @@ export const getAllEvents = async () => {
         ORDER BY e.event_date ASC
       `);
 
-    return events;
+    return result.recordset;
   } catch (error) {
     console.error("Error fetching events:", error);
     throw new Error("Failed to fetch events");
