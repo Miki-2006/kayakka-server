@@ -24,7 +24,7 @@ export const addEvent = async (req, res) => {
         .json({ message: "Ошибка при разборе JSON-данных" });
     }
 
-
+    let nameOfImage = null;
     if (req.file) {
       const fileBuffer = req.file.buffer;
       nameOfImage = await imageToStorage(title, fileBuffer);      
