@@ -31,7 +31,9 @@ export const addEvent = async (req, res) => {
       nameOfImage = await imageToStorage(title, filePath);
 
       // Удаляем файл после загрузки в Azure
-      fs.unlinkSync(filePath);
+      fs.unlink(filePath, (err) => {
+        if (err) console.error('Ошибка при удалении файла:', err);
+      });      
     }
 
     const result = await Event.create({
