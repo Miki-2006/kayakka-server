@@ -1,12 +1,10 @@
 import containerClient from "../config/blobStorage.js";
-import fs from 'fs'
 
-export async function imageToStorage(nameToImage, filePath) {
+export async function imageToStorage(nameToImage, fileBuffer) {
     try {
         const blobName = nameToImage;
-        const blobClient = containerClient.getBlobClient(blobName);
-        const fileStream = fs.createReadStream(filePath);
-        await blobClient.uploadStream(fileStream);
+        const blobClient = containerClient.getBlockBlobClient(blobName);
+        await blobClient.uploadData(fileBuffer);
 
         const imageUrl = `https://${process.env.AZURE_ACCOUNT_NAME}.blob.core.windows.net/${containerClient.containerName}/${blobName}`;
         console.log(`File uploaded. Image URL: ${imageUrl}`);

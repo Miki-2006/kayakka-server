@@ -24,16 +24,10 @@ export const addEvent = async (req, res) => {
         .json({ message: "Ошибка при разборе JSON-данных" });
     }
 
-    let nameOfImage = null;
 
     if (req.file) {
-      const filePath = req.file.path;
-      nameOfImage = await imageToStorage(title, filePath);
-
-      // Удаляем файл после загрузки в Azure
-      fs.unlink(filePath, (err) => {
-        if (err) console.error('Ошибка при удалении файла:', err);
-      });      
+      const fileBuffer = req.file.buffer;
+      nameOfImage = await imageToStorage(title, fileBuffer);      
     }
 
     const result = await Event.create({
