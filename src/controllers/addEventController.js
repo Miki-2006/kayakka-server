@@ -1,5 +1,6 @@
 import Event from "../models/addEventModels.js";
 import { imageToStorage } from "./imageToBlobStorage.js";
+import path from 'path'
 
 export const addEvent = async (req, res) => {
   try {
