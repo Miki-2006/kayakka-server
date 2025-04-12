@@ -3,8 +3,6 @@ import containerClient from "../config/blobStorage.js";
 export async function imageToStorage(nameToImage, fileBuffer) {
   try {
     const blobName = nameToImage;
-    if (!blobName) throw new Error("Invalid blob name generated from: " + nameToImage);
-
     const blobClient = containerClient.getBlockBlobClient(blobName);
     await blobClient.uploadData(fileBuffer);
 

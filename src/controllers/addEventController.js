@@ -1,5 +1,6 @@
 import Event from "../models/addEventModels.js";
 import { imageToStorage } from "./imageToBlobStorage.js";
+import {v4 as uuidv4} from 'uuid'
 import path from 'path'
 
 export const addEvent = async (req, res) => {
@@ -28,12 +29,7 @@ export const addEvent = async (req, res) => {
     let nameOfImage = null;
     if (req.file) {
       const fileBuffer = req.file.buffer;
-      const nameOfImageToStorage = title.toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9_-]/g, "_")
-      .replace(/_+/g, "_")
-      .replace(/^_+|_+$/g, "");
+      const nameOfImageToStorage = uuidv4(); 
       const extension = path.extname(req.file.originalname).toLowerCase();
       nameOfImage = `${await imageToStorage(nameOfImageToStorage, fileBuffer)}${extension}`;      
     }
