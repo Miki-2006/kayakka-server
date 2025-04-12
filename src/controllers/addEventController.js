@@ -30,12 +30,10 @@ export const addEvent = async (req, res) => {
     if (req.file) {
       const fileBuffer = req.file.buffer;
       const nameOfImageToStorage = uuidv4(); 
-      let extension;
+      let extension = path.extname(req.file.originalname).toLowerCase();
       if (!extension) {
         console.log('No extension detected, defaulting to .jpg');
         extension = '.jpg'; // Пример дефолтного расширения
-      } else{
-        extension = path.extname(req.file.originalname).toLowerCase();
       }
       const name = await imageToStorage(nameOfImageToStorage, fileBuffer);    
       nameOfImage = `${name}${extension}`  
