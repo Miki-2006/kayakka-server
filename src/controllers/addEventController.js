@@ -31,7 +31,7 @@ export const addEvent = async (req, res) => {
       const fileBuffer = req.file.buffer;
       const nameOfImageToStorage = uuidv4(); 
       // const extension = path.extname(req.file.originalname).toLowerCase();
-      nameOfImage = `${await imageToStorage(nameOfImageToStorage, fileBuffer)}.jpg`;      
+      nameOfImage = await imageToStorage(nameOfImageToStorage, fileBuffer);      
     }
 
     const result = await Event.create({
