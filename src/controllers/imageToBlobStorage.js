@@ -8,7 +8,7 @@ export async function imageToStorage(nameToImage, fileBuffer) {
 
     const imageUrl = `https://${process.env.AZURE_ACCOUNT_NAME}.blob.core.windows.net/${containerClient.containerName}/${blobName}`;
     console.log(`File uploaded. Image URL: ${imageUrl}`);
-    return `${blobName}.jpg`;
+    return blobName;
   } catch (err) {
     console.error("Error uploading file to Azure Blob:", err);
     throw err;
