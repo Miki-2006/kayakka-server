@@ -28,8 +28,14 @@ export const addEvent = async (req, res) => {
     let nameOfImage = null;
     if (req.file) {
       const fileBuffer = req.file.buffer;
+      const nameOfImageToStorage = title.toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9_-]/g, "_")
+      .replace(/_+/g, "_")
+      .replace(/^_+|_+$/g, "");
       const extension = path.extname(req.file.originalname).toLowerCase();
-      nameOfImage = `${await imageToStorage(title, fileBuffer)}${extension}`;      
+      nameOfImage = `${await imageToStorage(nameOfImageToStorage, fileBuffer)}${extension}`;      
     }
 
     const result = await Event.create({

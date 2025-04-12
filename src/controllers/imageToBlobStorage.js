@@ -2,13 +2,7 @@ import containerClient from "../config/blobStorage.js";
 
 export async function imageToStorage(nameToImage, fileBuffer) {
   try {
-    const blobName = nameToImage
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9_-]/g, "_")
-      .replace(/_+/g, "_")
-      .replace(/^_+|_+$/g, "");
+    const blobName = nameToImage;
     const blobClient = containerClient.getBlockBlobClient(blobName);
     await blobClient.uploadData(fileBuffer);
 
