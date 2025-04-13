@@ -36,7 +36,7 @@ export const addEvent = async (req, res) => {
         extension = '.jpg'; // Пример дефолтного расширения
       }
       const name = await imageToStorage(nameOfImageToStorage, fileBuffer);    
-      nameOfImage = `${name}${extension}`  
+      nameOfImage = name + extension 
     }
 
     const result = await Event.create({
