@@ -1,4 +1,5 @@
 import connectToAzure from "../config/dbConnecting.js";
+import mssql from 'mssql'
 
 export const getAllCinemas = async () => {
     const pool = await connectToAzure();
@@ -15,7 +16,7 @@ export const getHallsOfCinemas = async (selectedCinemaId) => {
 
     const pool = await connectToAzure();
     const request = pool.request();
-    request.input("selectedCinemaId", selectedCinemaId)
+    request.input("selectedCinemaId", mssql.Int, selectedCinemaId)
 
     const result = await request.query(query)
 
