@@ -17,7 +17,7 @@ export const getHallsOfCinemas = async (selectedCinemaId) => {
     const request = pool.request();
     request.input("selectedCinemaId", selectedCinemaId)
 
-    const result = await request().query(query)
+    const result = await request.query(query)
 
     return result.recordset; 
 }
