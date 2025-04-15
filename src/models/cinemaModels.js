@@ -3,7 +3,7 @@ import connectToAzure from "../config/dbConnecting.js";
 export const getAllCinemas = async () => {
     const pool = await connectToAzure();
 
-    const result = pool.request().query("SELECT * FROM Cinemas")
+    const result = await pool.request().query("SELECT * FROM Cinemas")
 
     return result.recordset;
 }
